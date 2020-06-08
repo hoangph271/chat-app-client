@@ -5,22 +5,6 @@
       <StrangersList />
     </div>
     <div class="inbox">
-      <form class="chat-form"
-        @submit.prevent="handleSendMessage"
-      >
-        <input type="text"
-          v-model="message"
-          :disabled="!inboxFriend"
-          :placeholder="inboxFriend ? `Send to ${inboxFriend.email}` : 'Select a friend'"
-        >
-        <button
-          type="submit"
-          :disabled="!inboxFriend"
-          style="width: 4rem;"
-        >
-          Send
-        </button>
-      </form>
       <ul
         ref="chat-messages-list"
         class="chat-messages-list"
@@ -37,6 +21,22 @@
         </li>
       </ul>
       <div class="chat-messages-list-empty" v-else />
+      <form class="chat-form"
+        @submit.prevent="handleSendMessage"
+      >
+        <input type="text"
+          v-model="message"
+          :disabled="!inboxFriend"
+          :placeholder="inboxFriend ? `Send to ${inboxFriend.email}` : 'Select a friend'"
+        >
+        <button
+          type="submit"
+          :disabled="!inboxFriend"
+          style="width: 4rem;"
+        >
+          Send
+        </button>
+      </form>
     </div>
   </div>
 </template>
