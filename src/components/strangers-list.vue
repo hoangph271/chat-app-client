@@ -43,9 +43,27 @@ export default {
 </script>
 
 <style>
+.strangers-list > h5 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+.strangers-list > ul {
+  padding: 0;
+}
+@media screen and (max-width: 600px) {
+  .stranger-item {
+    display: flex;
+    flex-direction: column;
+  }
+}
 .stranger-item {
   cursor: pointer;
   display: flex;
+}
+.stranger-item > * {
+  height: 22px;
 }
 .stranger-item:hover {
   border: 1px solid transparent;

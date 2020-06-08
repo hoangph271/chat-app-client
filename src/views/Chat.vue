@@ -127,7 +127,11 @@ h5 {
 }
 .users-list {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  max-width: 100%;
+  grid-template-columns: calc(50% - 0.2rem) calc(50% - 0.2rem);
+  grid-column-gap: 0.4rem;
+  max-height: 20%;
+  overflow: auto;
 }
 .chat-messages-list-empty {
   flex-grow: 1;

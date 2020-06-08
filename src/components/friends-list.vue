@@ -1,15 +1,16 @@
 <template>
   <div class="friends-list">
-      <h5>Friends of {{ userEmail }}</h5>
-      <div v-if="friends.length === 0">
-        N/A
-      </div>
-      <ul>
-        <li
-          class="friend-item"
-          :key="friend._id"
-          v-for="friend in friends"
-        >
+    <h5>Friends of {{ userEmail }}</h5>
+    <div v-if="friends.length === 0">
+      N/A
+    </div>
+    <ul>
+      <li
+        class="friend-item"
+        :key="friend._id"
+        v-for="friend in friends"
+      >
+        <span class="email">
           <span class="status">
             {{ friend.isOnline ? '✔' : '❌' }}
           </span>
@@ -18,15 +19,16 @@
           >
             {{ friend.email }}
           </span>
-          <button
-            :disabled="isLoading"
-            @click="handleRemoveFriend(friend)"
-          >
-            Remove
-          </button>
-        </li>
-      </ul>
-    </div>
+        </span>
+        <button
+          :disabled="isLoading"
+          @click="handleRemoveFriend(friend)"
+        >
+          Remove
+        </button>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script>
@@ -48,6 +50,24 @@ export default {
 </script>
 
 <style>
+.friends-list > h5 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+.friends-list > ul {
+  padding: 0;
+}
+@media screen and (max-width: 600px) {
+  .friend-item {
+    display: flex;
+    flex-direction: column;
+  }
+}
+.friend-item > * {
+  height: 22px;
+}
 .friend-item {
   cursor: pointer;
   display: flex;
@@ -58,7 +78,18 @@ export default {
   box-shadow: 0 0 11px rgba(33,33,33,.6);
 }
 .friend-item > .email {
+  display: flex;
   flex-grow: 1;
+}
+.friend-item > .email > .status {
+  width: 25px;
+}
+.friend-item > .email > .email {
+  flex-basis: 0;
+  flex-grow: 1;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .friend-item  > button {
   cursor: pointer;
