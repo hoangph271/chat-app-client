@@ -1,8 +1,8 @@
 <template>
   <div class="chat-screen">
     <div class="users-list">
-      <FriendsList @select-friend="handleFriendSelected" />
-      <StrangersList />
+      <FriendsList @select-friend="handleUserSelected" />
+      <StrangersList @select-stranger="handleUserSelected" />
     </div>
     <div class="inbox">
       <ul
@@ -23,7 +23,7 @@
           </span>
         </li>
       </ul>
-      <div class="chat-messages-list-empty" v-else />
+      <div class="chat-messages-list-empty" v-else>N/A</div>
       <form class="chat-form"
         @submit.prevent="handleSendMessage"
       >
@@ -71,8 +71,8 @@ export default {
     }
   },
   methods: {
-    handleFriendSelected (friend) {
-      this.$store.dispatch('changeInboxFriend', friend)
+    handleUserSelected (user) {
+      this.$store.dispatch('changeInboxFriend', user)
     },
     handleSendMessage () {
       if (!this.message) return

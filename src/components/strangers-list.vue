@@ -10,7 +10,9 @@
         :key="stranger._id"
         v-for="stranger in strangers"
       >
-        <span>{{ stranger.email }}</span>
+        <span
+          @click="$emit('select-stranger', stranger)"
+        >{{ stranger.email }}</span>
         <button
           :disabled="isLoading"
           @click="handleAddFriend(stranger)"

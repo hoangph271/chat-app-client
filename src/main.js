@@ -40,8 +40,8 @@ const store = new Vuex.Store({
       state.userId = window.sessionStorage.getItem('@userId')
       state.userEmail = window.sessionStorage.getItem('@userEmail')
     },
-    changeInboxFriend (state, friend) {
-      state.inboxFriend = friend
+    changeInboxFriend (state, user) {
+      state.inboxFriend = user
       state.inboxMessages = []
     },
     changeInboxMessages (state, inboxMessages) {
@@ -97,12 +97,12 @@ const store = new Vuex.Store({
     addFriend (context, friend) {
       context.commit('addFriend', friend)
     },
-    async changeInboxFriend (context, friend) {
-      context.commit('changeInboxFriend', friend)
+    async changeInboxFriend (context, user) {
+      context.commit('changeInboxFriend', user)
 
       const inboxMessages = await API.getMessages({
         _id: context.state.userId,
-        friendId: friend._id
+        friendId: user._id
       })
 
       context.commit('changeInboxMessages', inboxMessages)
