@@ -45,7 +45,7 @@ const store = new Vuex.Store({
       state.inboxMessages = []
     },
     changeInboxMessages (state, inboxMessages) {
-      state.inboxMessages = inboxMessages
+      state.inboxMessages = inboxMessages.sort((m1, m2) => m1.time - m2.time)
     },
     removeFriend (state, friendId) {
       state.friends = state.friends.filter(friend => friend._id !== friendId)
@@ -107,11 +107,30 @@ const store = new Vuex.Store({
 
       context.commit('changeInboxMessages', inboxMessages)
     },
-    async newInboxMessage (context, inboxMessage) {
+    newInboxMessage (context, inboxMessage) {
       context.commit('changeInboxMessages', [
         ...context.state.inboxMessages,
         inboxMessage
       ])
+    },
+    async updateMissedMessages (context) {
+      if (!context.state.userId) return
+      if (!context.state.inboxFriend) return
+
+      const { time: lastMessageTime } = [...context.state.inboxMessages].pop()
+
+      const missedMessages = await API.getMessages({
+        _id: context.state.userId,
+        friendId: context.state.inboxFriend._id,
+        time: lastMessageTime
+      })
+
+      const messages = [
+        ...context.state.inboxMessages,
+        ...missedMessages.filter(({ _id }) => !context.state.inboxMessages.some(message => message._id === _id))
+      ]
+
+      context.commit('changeInboxMessages', messages)
     }
   }
 })
@@ -147,11 +166,9 @@ socket.on('@friendOnline', function (friendId) {
 })
 socket.on('@new-message', (inboxMessage) => {
   store.dispatch('newInboxMessage', inboxMessage)
-  // Vue.toasted.show(`${email}: ${message}`, {
-  //   theme: 'outline',
-  //   position: 'bottom-center',
-  //   duration: 5000
-  // })
+})
+socket.on('reconnect', () => {
+  store.dispatch('updateMissedMessages')
 })
 
 Vue.mixin({

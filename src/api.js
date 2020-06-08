@@ -6,8 +6,9 @@ const getUsers = async () => {
 
   return res.json()
 }
-const getMessages = async ({ _id, friendId }) => {
-  const res = await fetch(`${API_ROOT}/messages/${[_id, friendId].sort().join('_')}`)
+const getMessages = async ({ _id, friendId, time }) => {
+  const url = `${API_ROOT}/messages/${[_id, friendId].sort().join('_')}?${time ? `time=${time}` : ''}`
+  const res = await fetch(url)
 
   return res.json()
 }
