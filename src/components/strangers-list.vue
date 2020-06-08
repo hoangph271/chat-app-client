@@ -1,0 +1,67 @@
+<template>
+  <div class="strangers-list">
+    <h5>Strangers of {{ userEmail }}</h5>
+    <div v-if="strangers.length === 0">
+      N/A
+    </div>
+    <ul>
+      <li
+        class="stranger-item"
+        :key="stranger._id"
+        v-for="stranger in strangers"
+      >
+        <span>{{ stranger.email }}</span>
+        <button
+          :disabled="isLoading"
+          @click="handleAddFriend(stranger)"
+        >
+          Add
+        </button>
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script>
+import { addFriend } from '../api'
+
+export default {
+  methods: {
+    async handleAddFriend ({ _id: friendId, email: friendEmail }) {
+      await addFriend({ _id: this.userId, email: this.userEmail, friendId, friendEmail })
+    }
+  },
+  computed: {
+    strangers () { return this.$store.getters.strangers },
+    userId () { return this.$store.getters.userId },
+    userEmail () { return this.$store.getters.userEmail },
+    isLoading () { return this.$store.getters.isLoading }
+  }
+}
+</script>
+
+<style>
+.friend-item,
+.stranger-item {
+  display: flex;
+}
+.friend-item:hover,
+.stranger-item:hover {
+  border: 1px solid transparent;
+  border-radius: 4px;
+  box-shadow: 0 0 11px rgba(33,33,33,.6);
+}
+.friend-item > span,
+.stranger-item > span {
+  flex-grow: 1;
+}
+.friend-item  > button,
+.stranger-item > button {
+  cursor: pointer;
+}
+.friend-item > button:disabled,
+.stranger-item > button:disabled {
+  cursor: not-allowed;
+  background-color: darkgray;
+}
+</style>
