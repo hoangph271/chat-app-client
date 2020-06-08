@@ -49,6 +49,7 @@ export default {
 
 <style>
 .friend-item {
+  cursor: pointer;
   display: flex;
 }
 .friend-item:hover {

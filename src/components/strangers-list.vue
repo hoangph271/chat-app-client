@@ -41,25 +41,21 @@ export default {
 </script>
 
 <style>
-.friend-item,
 .stranger-item {
+  cursor: pointer;
   display: flex;
 }
-.friend-item:hover,
 .stranger-item:hover {
   border: 1px solid transparent;
   border-radius: 4px;
   box-shadow: 0 0 11px rgba(33,33,33,.6);
 }
-.friend-item > span,
 .stranger-item > span {
   flex-grow: 1;
 }
-.friend-item  > button,
 .stranger-item > button {
   cursor: pointer;
 }
-.friend-item > button:disabled,
 .stranger-item > button:disabled {
   cursor: not-allowed;
   background-color: darkgray;
