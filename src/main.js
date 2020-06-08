@@ -116,7 +116,8 @@ const store = new Vuex.Store({
   }
 })
 
-const socket = io('http://localhost:3000')
+// const socket = io('http://localhost:3000')
+const socket = io('https://demo-chat-app-server.herokuapp.com')
 
 store.watch(
   state => state.userId,

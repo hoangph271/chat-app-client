@@ -1,4 +1,5 @@
-const API_ROOT = 'http://localhost:3000'
+const API_ROOT = 'https://demo-chat-app-server.herokuapp.com'
+// const API_ROOT = 'http://localhost:3000'
 
 const getUsers = async () => {
   const res = await fetch(`${API_ROOT}/users`)
