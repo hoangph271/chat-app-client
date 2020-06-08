@@ -17,7 +17,10 @@
           :key="message._id"
           v-for="message in inboxMessages"
         >
-          <span>{{ message.content }}</span>
+          <span class="message-container">
+            <span class="message-content">{{ message.content }}</span>
+            <span class="message-time">{{ new Date(message.time).toLocaleTimeString() }}</span>
+          </span>
         </li>
       </ul>
       <div class="chat-messages-list-empty" v-else />
@@ -160,5 +163,13 @@ h5 {
 }
 .chat-messages-list > .user-message > span {
   box-shadow: 0 0 11px rgba(0, 184, 148, 0.6);
+}
+.message-container > .message-content {
+  display: block;
+}
+.message-container > .message-time {
+  display: block;
+  color: gray;
+  font-size: x-small;
 }
 </style>
