@@ -112,7 +112,9 @@ export default {
   display: flex;
   flex-direction: row;
   margin: auto;
-  max-width: 24rem;
+  margin-bottom: 0.2rem;
+  width: 30rem;
+  max-width: calc(100% - 0.4rem);
 }
 .chat-form > input {
   flex-grow: 1;
@@ -131,8 +133,9 @@ h5 {
   flex-basis: 0;
   flex-grow: 1;
   margin: auto;
-  margin-bottom: 0.6rem;
-  max-width: 30rem;
+  margin-bottom: 0.2rem;
+  width: 30rem;
+  max-width: calc(100% - 0.4rem);
   list-style-type: none;
   padding: 0.4rem;
   padding-bottom: 0.2rem;
