@@ -167,8 +167,13 @@ socket.on('@friendOnline', function (friendId) {
 socket.on('@new-message', (inboxMessage) => {
   store.dispatch('newInboxMessage', inboxMessage)
 })
+
 socket.on('reconnect', () => {
   store.dispatch('updateMissedMessages')
+
+  const { userId } = store.getters
+
+  userId && socket.emit('userId', userId)
 })
 
 Vue.mixin({
