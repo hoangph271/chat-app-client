@@ -8,18 +8,20 @@
       <ul
         ref="chat-messages-list"
         class="chat-messages-list"
-        v-if="inboxMessages && inboxMessages.length > 0"
+        v-if="allMessages && allMessages.length > 0"
       >
         <li
           :class="[
             message.from === userId ? 'user-message' : ''
           ].join(' ')"
           :key="message._id"
-          v-for="message in inboxMessages"
+          v-for="message in allMessages"
         >
           <span class="message-container">
             <span class="message-content">{{ message.content }}</span>
-            <span class="message-time">{{ new Date(message.time).toLocaleTimeString() }}</span>
+            <span class="message-time">
+              {{ message.sending ? '...' : new Date(message.time).toLocaleTimeString() }}
+            </span>
           </span>
         </li>
       </ul>
@@ -46,20 +48,38 @@
 
 <script>
 import { FriendsList, StrangersList } from '../components'
+import { nanoid } from 'nanoid'
 
 export default {
   data () {
     return {
-      message: ''
+      message: '',
+      messageQueue: Object.create(null),
+      lastUpdatedAt: null,
+      sentFailedAt: null
     }
   },
   computed: {
+    allMessages () {
+      return [
+        ...this.inboxMessages,
+        ...Object.values(this.messageQueue)
+      ]
+    },
     userId () { return this.$store.getters.userId },
     inboxMessages () { return this.$store.getters.inboxMessages },
     inboxFriend () { return this.$store.getters.inboxFriend }
   },
   watch: {
     inboxMessages: {
+      handler () {
+        const messageQueue = { ...this.messageQueue }
+        this.inboxMessages.forEach(message => { delete messageQueue[message._id] })
+        this.messageQueue = messageQueue
+      },
+      immediate: true
+    },
+    messageQueue: {
       handler () {
         this.$nextTick(() => {
           const messagesList = this.$refs['chat-messages-list']
@@ -77,13 +97,26 @@ export default {
     handleSendMessage () {
       if (!this.message) return
 
-      this.$socket.emit('@send-message', {
-        _id: this.inboxFriend._id,
-        message: this.message,
-        email: this.$store.getters.userEmail
-      })
+      const _id = nanoid()
+
+      const message = {
+        to: this.inboxFriend._id,
+        content: this.message,
+        from: this.userId,
+        _id
+      }
 
       this.message = ''
+      this.messageQueue = {
+        ...this.messageQueue,
+        [_id]: {
+          ...message,
+          sending: true,
+          time: Date.now()
+        }
+      }
+
+      this.$socket.emit('@send-message', message)
     }
   },
   mounted () {
